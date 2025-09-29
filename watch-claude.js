@@ -46,7 +46,17 @@ Co-Authored-By: Claude <noreply@anthropic.com>`;
           }
 
           console.log('✅ 자동 커밋 완료:', stdout.trim());
-          console.log('💡 GitHub에 푸시하려면: git push origin main');
+
+          // 자동으로 GitHub에 푸시
+          exec('git push origin main', (pushError, pushStdout) => {
+            if (pushError) {
+              console.error('❌ GitHub 푸시 실패:', pushError.message);
+              console.log('💡 수동으로 푸시하려면: git push origin main');
+              return;
+            }
+            console.log('🚀 GitHub 자동 푸시 완료!');
+            console.log(pushStdout.trim());
+          });
         });
       });
     }

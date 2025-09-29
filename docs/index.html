@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보안 모니터링 시스템 대시보드</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> 보안 모니터링 시스템</h1>
+            <p>실시간 서버 보안 및 시스템 모니터링 대시보드</p>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="active"><i class="fas fa-tachometer-alt"></i> 대시보드</a></li>
+                <li><a href="#security"><i class="fas fa-lock"></i> 보안 현황</a></li>
+                <li><a href="#monitoring"><i class="fas fa-chart-line"></i> 시스템 모니터링</a></li>
+                <li><a href="#alerts"><i class="fas fa-exclamation-triangle"></i> 알림</a></li>
+                <li><a href="#docs"><i class="fas fa-book"></i> 문서</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <!-- 대시보드 섹션 -->
+            <section id="dashboard" class="section">
+                <h2>📊 시스템 현황</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card critical">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>긴급 알림</h3>
+                            <span class="stat-number" id="critical-alerts">0</span>
+                            <span class="stat-label">건</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>보안 이벤트</h3>
+                            <span class="stat-number" id="security-events">0</span>
+                            <span class="stat-label">건 (24시간)</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>활성 서버</h3>
+                            <span class="stat-number" id="active-servers">0</span>
+                            <span class="stat-label">대</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>업타임</h3>
+                            <span class="stat-number" id="uptime">99.9</span>
+                            <span class="stat-label">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>시스템 리소스 사용률</h3>
+                        <canvas id="resourceChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>보안 이벤트 추이</h3>
+                        <canvas id="securityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 보안 현황 섹션 -->
+            <section id="security" class="section" style="display: none;">
+                <h2>🔒 보안 현황</h2>
+
+                <div class="security-overview">
+                    <div class="threat-levels">
+                        <h3>위협 수준</h3>
+                        <div class="threat-item low">
+                            <span class="threat-indicator"></span>
+                            <span>낮음 (Low)</span>
+                            <span class="threat-count">12건</span>
+                        </div>
+                        <div class="threat-item medium">
+                            <span class="threat-indicator"></span>
+                            <span>보통 (Medium)</span>
+                            <span class="threat-count">5건</span>
+                        </div>
+                        <div class="threat-item high">
+                            <span class="threat-indicator"></span>
+                            <span>높음 (High)</span>
+                            <span class="threat-count">2건</span>
+                        </div>
+                        <div class="threat-item critical">
+                            <span class="threat-indicator"></span>
+                            <span>긴급 (Critical)</span>
+                            <span class="threat-count">0건</span>
+                        </div>
+                    </div>
+
+                    <div class="recent-events">
+                        <h3>최근 보안 이벤트</h3>
+                        <div class="event-list">
+                            <div class="event-item">
+                                <div class="event-time">15:30</div>
+                                <div class="event-type warning">로그인 실패</div>
+                                <div class="event-description">IP: 192.168.1.100 에서 3회 연속 로그인 실패</div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-time">14:25</div>
+                                <div class="event-type info">시스템 접근</div>
+                                <div class="event-description">관리자 계정으로 시스템 접근 성공</div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-time">13:15</div>
+                                <div class="event-type success">방화벽 차단</div>
+                                <div class="event-description">의심스러운 IP 주소 자동 차단 완료</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 시스템 모니터링 섹션 -->
+            <section id="monitoring" class="section" style="display: none;">
+                <h2>📈 시스템 모니터링</h2>
+
+                <div class="monitoring-grid">
+                    <div class="monitor-card">
+                        <h3>CPU 사용률</h3>
+                        <div class="progress-container">
+                            <div class="progress-bar" data-value="45">
+                                <span class="progress-text">45%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monitor-card">
+                        <h3>메모리 사용률</h3>
+                        <div class="progress-container">
+                            <div class="progress-bar" data-value="67">
+                                <span class="progress-text">67%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monitor-card">
+                        <h3>디스크 사용률</h3>
+                        <div class="progress-container">
+                            <div class="progress-bar" data-value="82">
+                                <span class="progress-text">82%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monitor-card">
+                        <h3>네트워크 대역폭</h3>
+                        <div class="progress-container">
+                            <div class="progress-bar" data-value="34">
+                                <span class="progress-text">34%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="server-status">
+                    <h3>서버 상태</h3>
+                    <div class="server-list">
+                        <div class="server-item online">
+                            <span class="server-indicator"></span>
+                            <span class="server-name">Web Server 01</span>
+                            <span class="server-ip">192.168.1.10</span>
+                            <span class="server-status">온라인</span>
+                        </div>
+                        <div class="server-item online">
+                            <span class="server-indicator"></span>
+                            <span class="server-name">Database Server</span>
+                            <span class="server-ip">192.168.1.20</span>
+                            <span class="server-status">온라인</span>
+                        </div>
+                        <div class="server-item warning">
+                            <span class="server-indicator"></span>
+                            <span class="server-name">Mail Server</span>
+                            <span class="server-ip">192.168.1.30</span>
+                            <span class="server-status">경고</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 알림 섹션 -->
+            <section id="alerts" class="section" style="display: none;">
+                <h2>🚨 실시간 알림</h2>
+
+                <div class="alert-filters">
+                    <button class="filter-btn active" data-filter="all">전체</button>
+                    <button class="filter-btn" data-filter="critical">긴급</button>
+                    <button class="filter-btn" data-filter="warning">경고</button>
+                    <button class="filter-btn" data-filter="info">정보</button>
+                </div>
+
+                <div class="alert-list">
+                    <div class="alert-item critical">
+                        <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="alert-content">
+                            <h4>디스크 공간 부족</h4>
+                            <p>서버 01의 디스크 사용률이 90%를 초과했습니다.</p>
+                            <span class="alert-time">2분 전</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn-sm">해결</button>
+                            <button class="btn-sm">무시</button>
+                        </div>
+                    </div>
+
+                    <div class="alert-item warning">
+                        <div class="alert-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="alert-content">
+                            <h4>의심스러운 로그인 시도</h4>
+                            <p>192.168.1.100에서 반복적인 로그인 실패가 감지되었습니다.</p>
+                            <span class="alert-time">5분 전</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn-sm">차단</button>
+                            <button class="btn-sm">조사</button>
+                        </div>
+                    </div>
+
+                    <div class="alert-item info">
+                        <div class="alert-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="alert-content">
+                            <h4>시스템 업데이트 완료</h4>
+                            <p>보안 패치 설치가 성공적으로 완료되었습니다.</p>
+                            <span class="alert-time">10분 전</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn-sm">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 문서 섹션 -->
+            <section id="docs" class="section" style="display: none;">
+                <h2>📚 시스템 문서</h2>
+
+                <div class="docs-grid">
+                    <div class="doc-card">
+                        <h3><i class="fas fa-cog"></i> 설치 가이드</h3>
+                        <p>보안 모니터링 시스템 설치 및 초기 설정 방법</p>
+                        <a href="https://github.com/mhkim821002/claude_test_1/blob/main/CLAUDE.md" target="_blank" class="doc-link">
+                            GitHub에서 보기 <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="doc-card">
+                        <h3><i class="fas fa-shield-alt"></i> 보안 설정</h3>
+                        <p>보안 정책 및 접근 제어 설정 가이드</p>
+                        <a href="#" class="doc-link">
+                            문서 보기 <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="doc-card">
+                        <h3><i class="fas fa-bell"></i> Slack 연동</h3>
+                        <p>Slack 알림 시스템 설정 및 자동화 가이드</p>
+                        <a href="#" class="doc-link">
+                            문서 보기 <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="doc-card">
+                        <h3><i class="fas fa-code"></i> API 문서</h3>
+                        <p>REST API 엔드포인트 및 사용법</p>
+                        <a href="#" class="doc-link">
+                            API 문서 <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 보안 모니터링 시스템. Claude Code로 개발되었습니다.</p>
+            <p>
+                <a href="https://github.com/mhkim821002/claude_test_1" target="_blank">
+                    <i class="fab fa-github"></i> GitHub 저장소
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
