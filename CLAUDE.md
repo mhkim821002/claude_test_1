@@ -139,3 +139,33 @@ npm install -D jest supertest
 # 린팅 도구
 npm install -D eslint prettier
 ```
+
+## Git 및 GitHub 자동화
+
+### CLAUDE.md 자동 업로드 기능
+
+이 프로젝트에는 CLAUDE.md 파일의 변경사항을 자동으로 Git에 커밋하는 기능이 포함되어 있습니다:
+
+```bash
+# CLAUDE.md 변경사항 모니터링 시작
+npm run watch-claude
+
+# GitHub에 수동 푸시
+npm run push
+```
+
+**자동화 스크립트 (`watch-claude.js`)**:
+- CLAUDE.md 파일 변경사항을 1초마다 감지
+- 변경 시 자동으로 Git 커밋 생성
+- 타임스탬프가 포함된 커밋 메시지 자동 생성
+
+**사용 방법**:
+1. 터미널에서 `npm run watch-claude` 실행
+2. CLAUDE.md 파일을 편집하고 저장
+3. 자동으로 Git 커밋이 생성됨
+4. `npm run push`로 GitHub에 업로드
+
+**주의사항**:
+- GitHub 푸시는 인증 설정 후 수동으로 실행해야 함
+- Ctrl+C로 모니터링 중단 가능
+- Git 사용자 정보가 설정되어 있어야 함
